@@ -51,3 +51,22 @@ if (isset($_POST['search'])) {
     $searchQuery = "SELECT * FROM `major`";
     $search_result = $conn->query($searchQuery);
 }
+// update data
+
+if (isset($_POST['btnUpdate'])) {
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $students = $_POST['students'];
+
+    $updateQuery = "UPDATE major SET name = ?, price = ?, students = ? WHERE id = '$id'";
+    $execute = $conn->prepare($updateQuery);
+    $execute->bind_param("sss", $name, $price, $students);
+    $executeResult = $execute->execute();
+
+    if (!$executeResult) {
+        die("Query failed: " . mysqli_error($conn));
+    } else {
+        header('Location: major.php');
+        exit;
+    }
+}
